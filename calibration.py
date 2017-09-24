@@ -41,6 +41,7 @@ while(1):
     k = cv2.waitKey(5) & 0xFF
     if k == 27:
         break
+cv2.destroyAllWindows()
 res = []
 print(mask[0,0])
 for x in range(0,width):
@@ -62,4 +63,3 @@ f.write(str(a)+"\n"+str(b)+"\n"+str(c)+"\n"+str(d)+"\n"+str(e)+"\n"+str(g)+"\n")
 f.close()
 print(a,b,c)
 print(d,e,g)
-cv2.destroyAllWindows()
