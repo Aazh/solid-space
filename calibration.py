@@ -13,7 +13,7 @@ while i != 30:
     i = i + 1
 
 picture = get_image()
-picture2 = get_image()
+picture2 = cv2.cvtColor(get_image(), cv2.COLOR_BGR2HSV)
 
 height = np.size(picture,0)
 width = np.size(picture,1)
@@ -39,7 +39,8 @@ camera.release()
 while(1):
     cv2.imshow("pilt",picture)
     cv2.imshow("mask", mask)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    k = cv2.waitKey(5) & 0xFF
+    if k == 27:
         break
 res = []
 print(mask[0,0])
@@ -47,6 +48,12 @@ for x in range(0,width):
     for y in range(0,height):
         if mask[y,x] != [0]:
             res.append(picture2[y,x])
-print(res)
-
+print(res[0][0])
+print(len(res))
+a,b,c = 0,0,0
+for i in range(len(res)):
+    a = max(a, res[i][0])
+    b = max(b, res[i][1])
+    c = max(c, res[i][2])
+print(a,b,c)
 cv2.destroyAllWindows()
