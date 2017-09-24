@@ -6,9 +6,9 @@ while(1):
     _, frame = cap.read()
     # Convert BGR to HSV
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    # define range of blue color in HSV
-    lower_orange = np.array([0,140,140])
-    upper_orange = np.array([40,255,255])
+    # define range of orange color in HSV
+    lower_orange = np.array([0,7,139])
+    upper_orange = np.array([35,251,255])
     # Threshold the HSV image to get only orange colors
     mask = cv2.inRange(hsv, lower_orange, upper_orange)
     # Bitwise-AND mask and original image
