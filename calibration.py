@@ -15,7 +15,7 @@ picture = get_image()
 
 camera.release()
 while(1):
-    imshow(picture)
+    cv2.imshow("pilt",picture)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 cv2.destroyAllWindows()
