@@ -1,14 +1,40 @@
 import cv2
 import numpy as np
 cap = cv2.VideoCapture(0)
+# Load HSV values
+g = open("config.txt")
+huemax = int(g.readline())
+satmax = int(g.readline())
+intmax = int(g.readline())
+huemin = int(g.readline())
+satmin = int(g.readline())
+intmin = int(g.readline())
+def nothing(x):
+    pass
+g.close()
+# Make trackbars for changing color ranges
+cv2.namedWindow('frame')
+cv2.createTrackbar('huemin','frame',huemin,179,nothing)
+cv2.createTrackbar('satmin','frame',satmin,255,nothing)
+cv2.createTrackbar('intmin','frame',intmin,255,nothing)
+cv2.createTrackbar('huemax','frame',huemax,179,nothing)
+cv2.createTrackbar('satmax','frame',satmax,255,nothing)
+cv2.createTrackbar('intmax','frame',intmax,255,nothing)
 while(1):
+    # Set color ranges based on trackbars
+    huemin = cv2.getTrackbarPos('huemin', 'frame')
+    satmin = cv2.getTrackbarPos('satmin', 'frame')
+    intmin = cv2.getTrackbarPos('intmin', 'frame')
+    huemax = cv2.getTrackbarPos('huemax', 'frame')
+    satmax = cv2.getTrackbarPos('satmax', 'frame')
+    intmax = cv2.getTrackbarPos('intmax', 'frame')
     # Take each frame
     _, frame = cap.read()
     # Convert BGR to HSV
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     # define range of orange color in HSV
-    lower_orange = np.array([0,7,139])
-    upper_orange = np.array([35,251,255])
+    lower_orange = np.array([huemin,satmin,intmin])
+    upper_orange = np.array([huemax,satmax,intmax])
     # Threshold the HSV image to get only orange colors
     mask = cv2.inRange(hsv, lower_orange, upper_orange)
     # Bitwise-AND mask and original image
@@ -31,3 +57,7 @@ while(1):
     if k == 27:
         break
 cv2.destroyAllWindows()
+# Save HSV values
+f = open("config.txt","w")
+f.write(str(huemax)+"\n"+str(satmax)+"\n"+str(intmax)+"\n"+str(huemin)+"\n"+str(satmin)+"\n"+str(intmin)+"\n")
+f.close()
