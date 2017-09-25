@@ -47,6 +47,13 @@ while(1):
         # find the biggest area
         c = max(contours, key=cv2.contourArea)
 
+        M = cv2.moments(c)
+        try:
+            cx = int(M['m10'] / M['m00'])
+            cy = int(M['m01'] / M['m00'])
+            cv2.circle(res, (cx, cy), 5, (0, 255, 0), -1)
+        except:
+            M = 0
         x, y, w, h = cv2.boundingRect(c)
         # draw the book contour (in green)
         cv2.rectangle(res, (x, y), (x + w, y + h), (0, 255, 0), 2)
