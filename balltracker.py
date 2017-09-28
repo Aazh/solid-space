@@ -64,6 +64,7 @@ while(1):
     if k == 27:
         break
 cv2.destroyAllWindows()
+cap.release()
 # Save HSV values
 f = open("config.txt","w")
 f.write(str(huemax)+"\n"+str(satmax)+"\n"+str(intmax)+"\n"+str(huemin)+"\n"+str(satmin)+"\n"+str(intmin)+"\n")
