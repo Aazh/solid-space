@@ -32,10 +32,10 @@ while(1):
     _, frame = cap.read()
     # Convert BGR to HSV
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    # define range of orange color in HSV
+    # define range of color in HSV
     lower_orange = np.array([huemin,satmin,intmin])
     upper_orange = np.array([huemax,satmax,intmax])
-    # Threshold the HSV image to get only orange colors
+    # Threshold the HSV image to get only necessary colors
     mask = cv2.inRange(hsv, lower_orange, upper_orange)
     # Bitwise-AND mask and original image
     res = cv2.bitwise_and(frame,frame, mask= mask)
@@ -46,8 +46,15 @@ while(1):
 
         # find the biggest area
         c = max(contours, key=cv2.contourArea)
-
         M = cv2.moments(c)
+
+        area = cv2.minAreaRect(c)
+        known_dist = 0.15
+        known_width = 0.04
+        focal_length = 649
+        distance = known_width * focal_length / area[1][0]
+        print(distance)
+
         try:
             cx = int(M['m10'] / M['m00'])
             cy = int(M['m01'] / M['m00'])
