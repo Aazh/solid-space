@@ -17,8 +17,6 @@ def detect(lowerColor,upperColor,hsv):
     res = cv2.bitwise_and(frame,frame, mask= mask)
     im2, contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     if len(contours) != 0:
-        # draw in blue the contours that were founded
-        cv2.drawContours(res, contours, -1, 255, 3)
 
         # find the biggest area
         c = max(contours, key=cv2.contourArea)
@@ -94,8 +92,6 @@ while(1):
     res1, mask1, cx1, cy1 = detect(lowerColor1, upperColor1, hsv)
     res2, mask2, cx2, cy2 = detect(lowerColor2, upperColor2, hsv)
     # Make a bunch of windows
-    cv2.imshow("mask1",mask1)
-    cv2.imshow("mask2", mask2)
     cv2.imshow('frame',frame)
     cv2.imshow('res1',res1)
     cv2.imshow('res2', res2)

@@ -21,9 +21,15 @@ print(height)
 print(width)
 mask = np.zeros((height, width, 1), np.uint8)
 radius = 0
+target = 0
+
 def setbrushsize(int):
     global radius
     radius = int
+
+def settarget(int):
+    global target
+    target = int
 
 def draw_circle(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONDBLCLK:
@@ -33,9 +39,11 @@ def draw_circle(event, x, y, flags, param):
 
 cv2.namedWindow('pilt')
 cv2.createTrackbar('Brush size','pilt',0,500,setbrushsize)
+cv2.createTrackbar('target','pilt',0,1,settarget)
 cv2.setMouseCallback('pilt', draw_circle)
 
 camera.release()
+
 while(1):
     cv2.imshow("pilt",picture)
     k = cv2.waitKey(5) & 0xFF
@@ -58,8 +66,40 @@ for i in range(len(res)):
     d = min(d, res[i][0])
     e = min(e, res[i][1])
     g = min(f, res[i][2])
-f = open("config.txt","w")
-f.write(str(a)+"\n"+str(b)+"\n"+str(c)+"\n"+str(d)+"\n"+str(e)+"\n"+str(g)+"\n")
-f.close()
+#if it fails to open the config file, create a new one
+try:
+    h = open("config.txt")
+except:
+    h = open("config.txt", "w")
+    h.close()
+    h = open("config.txt")
+#if the config file is filled incorrectly, fill it with 12 zeroes
+if str(h.read()).count("\n") != 12:
+    h.close()
+    h = open("config.txt", "w")
+    h.write("0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n")
+    h.close()
+else:
+    h.close()
+h = open("config.txt")
+#if the target is zero, overwrite values 1-6 and preserve everything after that
+if target == 0:
+    for i in range(6):
+        h.readline()
+    txt = h.read()
+    h.close()
+    f = open("config.txt", "w")
+    f.write(str(a) + "\n" + str(b) + "\n" + str(c) + "\n" + str(d) + "\n" + str(e) + "\n" + str(g) + "\n" + txt)
+    f.close()
+#if the target is one, preserve values 1-6 and overwrite values 7-12
+else:
+    txt = ""
+    for i in range(6):
+        txt = txt + h.readline()
+    h.close()
+    f = open("config.txt", "w")
+    f.write(txt + str(a)+"\n"+str(b)+"\n"+str(c)+"\n"+str(d)+"\n"+str(e)+"\n"+str(g)+"\n")
+    f.close()
+
 print(a,b,c)
 print(d,e,g)
