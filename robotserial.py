@@ -3,7 +3,13 @@ import cv2
 from rattakiirus import wheelCalc, mainboardSpeedCalc
 from math import pi
 
-import cv2
+ser = serial.Serial(
+    port='COM3',
+    baudrate=115200,
+    parity=serial.PARITY_NONE,
+    stopbits=serial.STOPBITS_TWO,
+    bytesize=serial.EIGHTBITS
+)
 
 def liigu(speed, angle, angularVelocity):
     wheelSpeed0 = str(mainboardSpeedCalc(wheelCalc(0, speed, angle, angularVelocity)))

@@ -2,6 +2,14 @@ from detection_functions import detector
 from movement_functions import liigu
 import cv2
 try:
+    ser = serial.Serial(
+        port='COM3',
+        baudrate=115200,
+        parity=serial.PARITY_NONE,
+        stopbits=serial.STOPBITS_TWO,
+        bytesize=serial.EIGHTBITS
+    )
+
     detectors = []
     for i in range(3):
         looker = detector('colorConfig{0}.txt'.format(i), i)
@@ -26,6 +34,8 @@ try:
 
     cv2.destroyAllWindows()
     cap.release()
+    ser.close()
 except:
     cv2.destroyAllWindows()
     cap.release()
+    ser.close()
