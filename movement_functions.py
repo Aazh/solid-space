@@ -1,4 +1,6 @@
 from math import pi, cos
+import serial
+
 wheelConfig0 = [11/6*pi , 0.135]
 wheelConfig1 = [1/6*pi , 0.135]
 wheelConfig2 = [6/6*pi , 0.135]
@@ -22,3 +24,10 @@ def mainboardSpeedCalc(wheelLinearVelocity):
     2 * pi * wheelRadius * pidControlFrequency)
     wheelAngularSpeedMainboardUnits = wheelLinearVelocity * wheelSpeedToMainboardUnits
     return int(wheelAngularSpeedMainboardUnits)
+
+def liigu(speed, angle, angularVelocity):
+    wheelSpeed0 = str(mainboardSpeedCalc(wheelCalc(0, speed, angle, angularVelocity)))
+    wheelSpeed1 = str(mainboardSpeedCalc(wheelCalc(1, speed, angle, angularVelocity)))
+    wheelSpeed2 = str(mainboardSpeedCalc(wheelCalc(2, speed, angle, angularVelocity)))
+
+    ser.write("sd:{0}:{1}:{2}:0\n".format(wheelSpeed0, wheelSpeed1, wheelSpeed2).encode())
