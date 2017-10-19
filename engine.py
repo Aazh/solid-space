@@ -1,6 +1,7 @@
 from detection_functions import detector
 from movement_functions import liigu
 import cv2
+import serial
 try:
     ser = serial.Serial(
         port='COM3',
