@@ -25,7 +25,7 @@ def mainboardSpeedCalc(wheelLinearVelocity):
     wheelAngularSpeedMainboardUnits = wheelLinearVelocity * wheelSpeedToMainboardUnits
     return int(wheelAngularSpeedMainboardUnits)
 
-def liigu(speed, angle, angularVelocity):
+def liigu(speed, angle, angularVelocity, ser):
     wheelSpeed0 = str(mainboardSpeedCalc(wheelCalc(0, speed, angle, angularVelocity)))
     wheelSpeed1 = str(mainboardSpeedCalc(wheelCalc(1, speed, angle, angularVelocity)))
     wheelSpeed2 = str(mainboardSpeedCalc(wheelCalc(2, speed, angle, angularVelocity)))
