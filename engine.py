@@ -9,7 +9,7 @@ cap = cv2.VideoCapture(1)
 port = 'COM3'
 
 ser = serial.Serial(
-    port=port',
+    port=port,
     baudrate=115200,
     parity=serial.PARITY_NONE,
     stopbits=serial.STOPBITS_TWO,
