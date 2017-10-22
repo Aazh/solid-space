@@ -17,6 +17,7 @@ ser = serial.Serial(
 )
 t = time() + 2
 state = 'search and destroy'
+q = 0
 try:
     detectors = []
     for i in range(3):
@@ -46,15 +47,20 @@ try:
             ret, mask, x, y = detectors[0].detect(cap)
             cv2.imshow('kontroll', ret)
             print(x, y)
-            if x > 300 and x < 360 and x != -1:
+            if time() < q:
+                liigu(-0.4, 9 / 6 * pi, 0, ser)
+            elif y > 420 and y != -1:
+                state = 'kill ball'
+            elif x > 300 and x < 360 and x != -1:
                 print('eh')
                 if y < 420 and y != -1:
-                    q = time() + 0.25
-                    while time() < q:
-                        liigu(-0.4, 9 / 6 * pi, 0, ser)
+                    q = time() + 0.15
+                    #while time() < q:
+                    #    print('k')
+                    #liigu(-0.4, 9 / 6 * pi, 0, ser)
 
-                elif y > 420 and y != -1:
-                    state = 'kill ball'
+                #elif y > 420 and y != -1:
+                #    state = 'kill ball'
 
                 else:
                     liigu(0, 0, 0, ser)
