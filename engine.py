@@ -6,15 +6,17 @@ import cv2
 import serial
 
 cap = cv2.VideoCapture(1)
+port = 'COM3'
 
 ser = serial.Serial(
-    port='COM3',
+    port=port',
     baudrate=115200,
     parity=serial.PARITY_NONE,
     stopbits=serial.STOPBITS_TWO,
     bytesize=serial.EIGHTBITS
 )
 t = time() + 2
+state = 'search and destroy'
 try:
     detectors = []
     for i in range(3):
@@ -27,41 +29,43 @@ try:
 
     while True:
 
-        if t < time():
-            t = time() + 2
-            ser.close()
-            ser = serial.Serial(
-                port='COM3',
-                baudrate=115200,
-                parity=serial.PARITY_NONE,
-                stopbits=serial.STOPBITS_TWO,
-                bytesize=serial.EIGHTBITS
-            )
+        if state == 'search and destroy':
 
-        ret, mask, x, y = detectors[0].detect(cap)
-        cv2.imshow('kontroll', ret)
-        k = cv2.waitKey(5) & 0xFF
-        print(x, y)
-        if x > 300 and x < 360 and x != -1:
-            print('eh')
-            if y < 440 and y != -1:
-                print('oh')
-                liigu(-0.4, 9 / 6 * pi, 0, ser)
-                print('aha')
+            if t < time():
+                t = time() + 2
+                ser.close()
+                ser = serial.Serial(
+                    port=port,
+                    baudrate=115200,
+                    parity=serial.PARITY_NONE,
+                    stopbits=serial.STOPBITS_TWO,
+                    bytesize=serial.EIGHTBITS
+                )
 
-            else:
-                liigu(0, 0, 0, ser)
+            ret, mask, x, y = detectors[0].detect(cap)
+            cv2.imshow('kontroll', ret)
+            k = cv2.waitKey(5) & 0xFF
+            print(x, y)
+            if x > 300 and x < 360 and x != -1:
+                print('eh')
+                if y < 440 and y != -1:
+                    print('oh')
+                    liigu(-0.4, 9 / 6 * pi, 0, ser)
+                    print('aha')
 
-        else:
-
-            if x < 300 and x != -1:
-                liigu(0, 0, -1, ser)
-
-            elif x > 360 and x != -1:
-                liigu(0, 0, 1, ser)
+                else:
+                    liigu(0, 0, 0, ser)
 
             else:
-                liigu(0, 0, 0, ser)
+
+                if x < 300 and x != -1:
+                    liigu(0, 0, -1, ser)
+
+                elif x > 360 and x != -1:
+                    liigu(0, 0, 1, ser)
+
+                else:
+                    liigu(0, 0, 0, ser)
 
         if k == 27:
             break
