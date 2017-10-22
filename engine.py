@@ -49,9 +49,10 @@ try:
             if x > 300 and x < 360 and x != -1:
                 print('eh')
                 if y < 420 and y != -1:
-                    print('oh')
-                    liigu(-0.4, 9 / 6 * pi, 0, ser)
-                    print('aha')
+                    q = time() + 0.25
+                    while time() < q:
+                        liigu(-0.4, 9 / 6 * pi, 0, ser)
+
                 elif y > 420 and y != -1:
                     state = 'kill ball'
 
