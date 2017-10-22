@@ -20,10 +20,8 @@ def draw_circle(event, fx, fy, flags, param):
         x = (fx - 250)
         y = -(fy - 250)
         rho, phi = cart2pol(x, y)
-def setSpeed(x):
-    global speed
-    speed = x // 100
-
+def setSpeed():
+    pass
 speed = 0
 port = 'COM3'
 ser = serial.Serial(
@@ -34,29 +32,39 @@ ser = serial.Serial(
     bytesize=serial.EIGHTBITS
 )
 cv2.namedWindow("kontroll")
-cv2.createTrackbar('speed','kontroll',0,100,setSpeed)
+cv2.createTrackbar('speed','kontroll',0,50,setSpeed)
 height = 500
 width = 500
-cv2.setMouseCallback('kontroll', draw_circle)
 x = 0
 y = 0
 rho, phi = cart2pol(x, y)
+rho = 0
+cv2.setMouseCallback('kontroll', draw_circle)
+i = 0
 while True:
     x, y = pol2cart(rho, phi)
-    print(x, y, rho, phi)
+    #print(x, y, rho, phi)
     k = cv2.waitKey(5) & 0xFF
     image = np.zeros((height, width, 3), np.uint8)
     cv2.circle(image, (250, 250), 250, (255, 255, 255), -1)
+    cv2.circle(image, (250, 250), 3, (255, 0, 0), -1)
     if x != 0 and y != 0:
         cv2.circle(image, (x + 250, (-y) + 250), 5, (0, 0, 250), -1)
-    if rho > 0 and x != -251:
+    if rho > 0:
         rho -= 1
-    if rho < 0 or x == 0 or y == 0:
-        rho, phi = cart2pol(-251, -251)
-    print(x, y, rho, phi)
+    if rho < 0:
+        rho = 0
+    #print(x, y, rho, phi)
 
+    speed = (cv2.getTrackbarPos('speed', 'kontroll'))/100
 
-    liigu(speed, rho, 0, ser)
+    i += 1
+    if i % 10 == 0:
+        if rho != 0:
+            liigu(speed, phi, 0, ser)
+
+        else:
+            liigu(0, 0, 0, ser)
 
 
 
