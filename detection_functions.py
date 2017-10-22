@@ -33,11 +33,15 @@ class detector:
             for i in contours:
 
                 M = cv2.moments(i)
-                ix = int(M['m10'] / M['m00'])
-                iy = int(M['m01'] / M['m00'])
+                try:
+                    ix = int(M['m10'] / M['m00'])
+                    iy = int(M['m01'] / M['m00'])
+                except:
+                    ix = -1
+                    iy = -1
 
                 if ix > 300 or ix < 360:
-                    contourArea.append(cv2.contourArea(i))
+                    contourArea.append(int(cv2.contourArea(i)*1.2))
                 else:
                     contourArea.append(cv2.contourArea(i))
                 print(cv2.contourArea(i))
