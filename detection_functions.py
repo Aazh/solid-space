@@ -28,8 +28,29 @@ class detector:
         im2, contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         if len(contours) != 0:
 
+            contourArea = []
             # find the biggest area
-            c = max(contours, key=cv2.contourArea)
+            for i in contours:
+
+                M = cv2.moments(i)
+                ix = int(M['m10'] / M['m00'])
+                iy = int(M['m01'] / M['m00'])
+
+                if ix > 300 or ix < 360:
+                    contourArea.append(cv2.contourArea(i))
+                else:
+                    contourArea.append(cv2.contourArea(i))
+                print(cv2.contourArea(i))
+
+            j = 0
+            s = 0
+            for i in range(len(contours)):
+                if contourArea[i] > s:
+                    s = contourArea[i]
+                    j = i
+
+            #c = max(contours, key=cv2.contourArea)
+            c = contours[j]
             M = cv2.moments(c)
 
             area = cv2.minAreaRect(c)
