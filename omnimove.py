@@ -55,8 +55,12 @@ while True:
         rho, phi = cart2pol(-251, -251)
     print(x, y, rho, phi)
 
-
-    liigu(speed, rho, 0, ser)
+    if k != ord('q') and k != ord('e'):
+        liigu(speed, rho, 0, ser)
+    elif k == ord("q"):
+        liigu(speed, rho, 0.5, ser)
+    elif k == ord("e"):
+        liigu(speed, rho, -0.5, ser)
 
 
 
