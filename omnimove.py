@@ -60,7 +60,7 @@ while True:
 
     i += 1
     if i % 10 == 0:
-        if rho != 0:
+        if rho != 0 and k != ord("q") and k != ord("e"):
             liigu(speed, phi, 0, ser)
 
         elif k == ord("q"):
