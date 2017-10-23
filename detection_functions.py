@@ -17,6 +17,7 @@ class detector:
     def detect(self, cap):
         cx = -1
         cy = -1
+        contour_area = -1
         _, frame = cap.read()
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         # Threshold the HSV image to get only necessary colors
@@ -56,6 +57,7 @@ class detector:
             #c = max(contours, key=cv2.contourArea)
             c = contours[j]
             M = cv2.moments(c)
+            contour_area = cv2.contourArea(c)
 
             area = cv2.minAreaRect(c)
             try:
@@ -72,7 +74,8 @@ class detector:
                 M = 0
                 cx = -1
                 cy = -1
+                contour_area = -1
             x, y, w, h = cv2.boundingRect(c)
             # draw the book contour (in green)
             cv2.rectangle(res, (x, y), (x + w, y + h), (0, 255, 0), 2)
-        return res, mask, cx, cy
+        return res, mask, cx, cy, contour_area

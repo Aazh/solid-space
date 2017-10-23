@@ -45,7 +45,7 @@ try:
                     bytesize=serial.EIGHTBITS
                 )
 
-            ret, mask, x, y = detectors[0].detect(cap)
+            ret, mask, x, y, area = detectors[0].detect(cap)
             cv2.imshow('kontroll', ret)
             print(x, y)
             if time() < q:
@@ -54,7 +54,7 @@ try:
             elif y > 420 and y != -1:
                 state = 'kill ball'
                 liigu(0, 0, 0, ser)
-            elif x > 300 and x < 360 and x != -1:
+            elif x > 300 and x < 360 and x != -1 and area > 10:
                 print('eh')
                 if y < 420 and y != -1:
                     q = time() + 0.15
@@ -71,11 +71,11 @@ try:
 
             else:
 
-                if x < 300 and x != -1:
+                if x < 300 and x != -1 and area > 10:
                     liigu(0, 0, -1, ser)
                     rotate = time() + 4
 
-                elif x > 360 and x != -1:
+                elif x > 360 and x != -1 and area > 10:
                     liigu(0, 0, 1, ser)
                     rotate = time() + 4
 
