@@ -57,6 +57,7 @@ try:
                 print('eh')
                 if y < 420 and y != -1:
                     q = time() + 0.15
+                    rotate = time() + 4
                     #while time() < q:
                     #    print('k')
                     #liigu(-0.4, 9 / 6 * pi, 0, ser)
