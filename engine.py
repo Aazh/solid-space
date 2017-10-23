@@ -77,8 +77,8 @@ try:
                     liigu(0, 0, 1, ser)
                     rotate = 0
 
-                elif rotate > 200:
-                    iigu(0, 0, 1, ser)
+                elif rotate > 80:
+                    liigu(0, 0, 1, ser)
 
 
                 else:
