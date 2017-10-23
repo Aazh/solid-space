@@ -53,6 +53,7 @@ try:
                 rotate = time() + 4
             elif y > 420 and y != -1:
                 state = 'kill ball'
+                liigu(0, 0, 0, ser)
             elif x > 300 and x < 360 and x != -1:
                 print('eh')
                 if y < 420 and y != -1:
