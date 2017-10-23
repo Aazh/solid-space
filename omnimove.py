@@ -63,6 +63,12 @@ while True:
         if rho != 0:
             liigu(speed, phi, 0, ser)
 
+        elif k == ord("q"):
+            liigu(speed, phi, 0.5, ser)
+
+        elif k == ord("e"):
+            liigu(speed, phi, -0.5, ser)
+
         else:
             liigu(0, 0, 0, ser)
 
