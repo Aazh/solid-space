@@ -18,7 +18,7 @@ ser = serial.Serial(
 t = time() + 2
 state = 'search and destroy'
 q = 0
-rotate = 0
+rotate = time() + 4
 try:
     detectors = []
     for i in range(3):
@@ -50,7 +50,7 @@ try:
             print(x, y)
             if time() < q:
                 liigu(-0.4, 9 / 6 * pi, 0, ser)
-                rotate = 0
+                rotate = time() + 4
             elif y > 420 and y != -1:
                 state = 'kill ball'
             elif x > 300 and x < 360 and x != -1:
@@ -71,19 +71,18 @@ try:
 
                 if x < 300 and x != -1:
                     liigu(0, 0, -1, ser)
-                    rotate = 0
+                    rotate = time() + 4
 
                 elif x > 360 and x != -1:
                     liigu(0, 0, 1, ser)
-                    rotate = 0
+                    rotate = time() + 4
 
-                elif rotate > 80:
+                elif time() > rotate:
                     liigu(0, 0, 1, ser)
 
 
                 else:
                     liigu(0, 0, 0, ser)
-                    rotate += 1
 
         if k == 27:
             break
