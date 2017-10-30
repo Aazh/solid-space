@@ -10,17 +10,18 @@ FieldID = 'B'
 RobotID = FieldID + 'D'
 
 cap = cv2.VideoCapture(0)
-port = 'COM3'
+port = 'COM4'
 
 ser = serial.Serial(
     port=port,
     baudrate=115200,
     parity=serial.PARITY_NONE,
     stopbits=serial.STOPBITS_TWO,
-    bytesize=serial.EIGHTBITS
+    bytesize=serial.EIGHTBITS,
+    timeout=0
 )
 t = time() + 2
-state = 'search and destroy'
+#state = 'search and destroy'
 q = 0
 rotate = time() + 4
 try:
@@ -34,7 +35,10 @@ try:
 
 
     while True:
-        input = ser.readline()
+        input = str(ser.readline()).split(':')[-1]
+        if input != "b''":
+            input = input[:-4]
+            print(input)
         if input == 'a{0}PING-----'.format(RobotID):
             ser.write("rf:a{0}ACK------\n".format(RobotID).encode())
         if input == 'a{0}START----'.format(RobotID):
