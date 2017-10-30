@@ -5,6 +5,10 @@ from time import time
 import cv2
 import serial
 
+
+FieldID = 'B'
+RobotID = FieldID + 'D'
+
 cap = cv2.VideoCapture(0)
 port = 'COM3'
 
@@ -30,6 +34,22 @@ try:
 
 
     while True:
+        input = ser.readline()
+        if input == 'a{0}PING-----'.format(RobotID):
+            ser.write("rf:a{0}ACK------\n".format(RobotID).encode())
+        if input == 'a{0}START----'.format(RobotID):
+            ser.write("rf:a{0}ACK------\n".format(RobotID).encode())
+            state = 'search and destroy'
+        if input == 'a{0}STOP-----'.format(RobotID):
+            ser.write("rf:a{0}ACK------\n".format(RobotID).encode())
+            state = 'stop'
+        if input == 'a{0}XSTART----'.format(FieldID):
+            state = 'search and destroy'
+        if input == 'a{0}XSTOP-----'.format(FieldID):
+            state = 'stop'
+
+
+
         k = cv2.waitKey(5) & 0xFF
 
         if state == 'search and destroy':
