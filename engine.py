@@ -10,7 +10,7 @@ FieldID = 'B'
 RobotID = FieldID + 'D'
 
 cap = cv2.VideoCapture(0)
-port = 'COM4'
+port = 'COM3'
 
 ser = serial.Serial(
     port=port,
@@ -21,7 +21,7 @@ ser = serial.Serial(
     timeout=0
 )
 t = time() + 2
-#state = 'search and destroy'
+state = 'stop'
 q = 0
 rotate = time() + 4
 try:
