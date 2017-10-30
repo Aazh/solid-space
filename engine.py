@@ -51,6 +51,7 @@ try:
             state = 'search and destroy'
         if input == 'a{0}XSTOP-----'.format(FieldID):
             state = 'stop'
+        input = None
 
 
 
