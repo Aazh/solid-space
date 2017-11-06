@@ -1,5 +1,5 @@
 from detection_functions import detector
-from movement_functions import liigu
+from movement_functions import liigu, viska
 from math import pi
 from time import time
 import cv2
@@ -21,8 +21,10 @@ def main():
         bytesize=serial.EIGHTBITS,
         timeout=0
     )
+    ser.write('d:1000'.encode())
     t = time() + 2
-    state = 'stop'
+    #state = 'stop'
+    state = 'search and destroy'
     q = 0
     rotate = time() + 4
     try:
@@ -86,12 +88,6 @@ def main():
                     if y < 420 and y != -1:
                         q = time() + 0.15
                         rotate = time() + 4
-                        #while time() < q:
-                        #    print('k')
-                        #liigu(-0.4, 9 / 6 * pi, 0, ser)
-
-                    #elif y > 420 and y != -1:
-                    #    state = 'kill ball'
 
                     else:
                         liigu(0, 0, 0, ser)
@@ -114,7 +110,8 @@ def main():
                         liigu(0, 0, 0, ser)
 
             if state == 'kill ball':
-                liigu(-0.2, 9 / 6 * pi, 0, ser, cannon=1200)
+                liigu(-0.2, 9 / 6 * pi, 0, ser)
+                viska(1500, ser)
                 if cannontime < time():
                     state = 'search and destroy'
 
