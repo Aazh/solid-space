@@ -79,6 +79,7 @@ def main():
                     rotate = time() + 4
                 elif y > 420 and y != -1:
                     state = 'kill ball'
+                    cannontime = time()+5
                     liigu(0, 0, 0, ser)
                 elif x > 300 and x < 360 and x != -1 and area > 10:
                     print('eh')
@@ -111,6 +112,11 @@ def main():
 
                     else:
                         liigu(0, 0, 0, ser)
+
+            if state == 'kill ball':
+                liigu(-0.2, 9 / 6 * pi, 0, ser, cannon=1200)
+                if cannontime < time():
+                    state = 'search and destroy'
 
             if k == 27:
                 break
