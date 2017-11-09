@@ -64,7 +64,7 @@ def main():
 
             if state == 'search and destroy':
 
-                if t < time():
+                '''if t < time():
                     t = time() + 2
                     ser.close()
                     ser = serial.Serial(
@@ -73,7 +73,7 @@ def main():
                         parity=serial.PARITY_NONE,
                         stopbits=serial.STOPBITS_TWO,
                         bytesize=serial.EIGHTBITS
-                    )
+                    )'''
                 #ser.write('fs:0\n'.encode())
 
                 cv2.imshow('kontroll', ret)ret, mask, x, y, area = detectors[0].detect(cap)
@@ -137,7 +137,7 @@ def main():
                 viska(1000, ser)
             print(state)
 
-            if state = 'rotate':
+            if state == 'rotate':
                 rotation(0.1, ser)
 
             if k == 27:
