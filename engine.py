@@ -85,7 +85,7 @@ def main():
                 #    rotate = time() + 4
                 if y > 420 and x > 300 and x < 360:
                     print('2')
-                    state = 'kill ball'
+                    state = 'rotate'
                     #cannontime = time()+5
 
                     #liigu(0, 0, 0, ser)
@@ -125,22 +125,21 @@ def main():
 
 
             if state == 'kill ball':
-                ret_k, mask_k, x_k, y_k, area_k = detectors[1].detect(cap)
-                if 300 > x_k > 360:
-                    state = 'rotate'
-                #a = time() + 2
-                #viska(1400, ser)
-                #while time() < a:
-                #    liigu(-0.2, 9 / 6 * pi, 0, ser)
+                a = time() + 1
+                viska(1400, ser)
+                while time() < a:
+                    liigu(-0.2, 9 / 6 * pi, 0, ser)
 
-                #state = 'search and destroy'
+                state = 'search and destroy'
             else:
                 viska(1000, ser)
             print(state)
 
             if state == 'rotate':
-
+                ret_k, mask_k, x_k, y_k, area_k = detectors[1].detect(cap)
                 rotation(0.1, ser)
+                if 300 < x_k <360:
+                    state = 'kill ball'
 
             if k == 27:
                 break
