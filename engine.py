@@ -76,7 +76,8 @@ def main():
                     )'''
                 #ser.write('fs:0\n'.encode())
 
-                cv2.imshow('kontroll', ret)ret, mask, x, y, area = detectors[0].detect(cap)
+                ret, mask, x, y, area = detectors[0].detect(cap)
+                cv2.imshow('kontroll', ret)
                 print(x, y)
                 #if time() < q:
                 #    print('1')
@@ -126,7 +127,7 @@ def main():
             if state == 'kill ball':
                 ret_k, mask_k, x_k, y_k, area_k = detectors[1].detect(cap)
                 if 300 > x_k > 360:
-                    state = 'execute ball'
+                    state = 'rotate'
                 a = time() + 2
                 viska(1400, ser)
                 while time() < a:
@@ -138,6 +139,7 @@ def main():
             print(state)
 
             if state == 'rotate':
+
                 rotation(0.1, ser)
 
             if k == 27:
