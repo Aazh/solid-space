@@ -50,8 +50,8 @@ def liigu(speed, angle, angularVelocity, ser):
 def rotation(speed, ser):
     global liigu_kontroll
     global liigu_aeg
-    wheelSpeed0 = str(mainboardSpeedCalc(speed*0.3))
-    wheelSpeed1 = str(mainboardSpeedCalc(speed*0.3))
+    wheelSpeed0 = str(mainboardSpeedCalc(speed*0.1))
+    wheelSpeed1 = str(mainboardSpeedCalc(speed*0.1))
     wheelSpeed2 = str(mainboardSpeedCalc(speed))
     liigu_uus = "sd:{0}:{1}:{2}\n".format(wheelSpeed0, wheelSpeed1, wheelSpeed2).encode()
     try:
