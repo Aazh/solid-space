@@ -1,7 +1,7 @@
 from detection_functions import detector
 
 
-from movement_functions import liigu, viska
+from movement_functions import liigu, viska, rotation
 from math import pi
 from time import *
 import cv2
@@ -26,7 +26,7 @@ def main():
     ser.write('d:1000\n'.encode())
     t = time() + 2
     #state = 'stop'
-    state = 'search and destroy'
+    state = 'rotate'
     q = 0
     rotate = time() + 4
     try:
@@ -75,8 +75,8 @@ def main():
                         bytesize=serial.EIGHTBITS
                     )
                 #ser.write('fs:0\n'.encode())
-                ret, mask, x, y, area = detectors[0].detect(cap)
-                cv2.imshow('kontroll', ret)
+
+                cv2.imshow('kontroll', ret)ret, mask, x, y, area = detectors[0].detect(cap)
                 print(x, y)
                 #if time() < q:
                 #    print('1')
@@ -121,7 +121,12 @@ def main():
                         print('see')
                         liigu(0, 0, 0, ser)
 
+
+
             if state == 'kill ball':
+                ret_k, mask_k, x_k, y_k, area_k = detectors[1].detect(cap)
+                if 300 > x_k > 360:
+                    state = 'execute ball'
                 a = time() + 2
                 viska(1400, ser)
                 while time() < a:
@@ -131,6 +136,9 @@ def main():
             else:
                 viska(1000, ser)
             print(state)
+
+            if state = 'rotate':
+                rotation(0.1, ser)
 
             if k == 27:
                 break

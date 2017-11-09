@@ -47,10 +47,29 @@ def liigu(speed, angle, angularVelocity, ser):
         liigu_kontroll = liigu_uus
         ser.write(liigu_uus)
 
+def rotation(speed, ser):
+    global liigu_kontroll
+    global liigu_aeg
+    wheelSpeed2 = str(mainboardSpeedCalc(speed))
+    liigu_uus = "sd:{0}:{1}:{2}\n".format(0, 0, wheelSpeed2).encode()
+    try:
+        if liigu_uus == liigu_kontroll:
+            if time() > liigu_aeg:
+                liigu_aeg = time() + 0.2
+                ser.write(liigu_uus)
+        else:
+            liigu_aeg = time() + 0.2
+            liigu_kontroll = liigu_uus
+            ser.write(liigu_uus)
+    except:
+        liigu_aeg = time() + 0.2
+        liigu_kontroll = liigu_uus
+        ser.write(liigu_uus)
+
 def viska(x, ser):
     global viska_kontroll
     global viska_aeg
-    viska_uus = 'd:{0}'.format(x).encode()
+    viska_uus = 'd:{0}\n'.format(x).encode()
     try:
         if viska_uus == viska_kontroll:
             if time() > viska_aeg:
