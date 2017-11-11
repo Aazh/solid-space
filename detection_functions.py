@@ -45,7 +45,7 @@ class detector:
                     contourArea.append(int(cv2.contourArea(i)*1.2))
                 else:
                     contourArea.append(cv2.contourArea(i))
-                print(cv2.contourArea(i))
+                #print(cv2.contourArea(i))
 
             j = 0
             s = 0
@@ -61,10 +61,10 @@ class detector:
 
             area = cv2.minAreaRect(c)
             try:
-                known_dist = 0.15
-                known_width = 0.04
-                focal_length = 649
-                distance = known_width * focal_length / area[1][0]
+                #known_dist = 0.15
+                #known_width = 0.04
+                #focal_length = 649
+                #distance = known_width * focal_length / area[1][0]
                 #   print(distance)
 
                 cx = int(M['m10'] / M['m00'])

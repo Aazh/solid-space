@@ -18,6 +18,7 @@ gearboxReductionRatio = 18.75
 encoderEdgesPerMotorRevolution = 64
 wheelRadius = 0.035
 pidControlFrequency = 60
+timer = 0.5
 
 def mainboardSpeedCalc(wheelLinearVelocity):
     wheelAngularVelocity = wheelLinearVelocity / wheelRadius
@@ -36,16 +37,23 @@ def liigu(speed, angle, angularVelocity, ser):
     try:
         if liigu_uus == liigu_kontroll:
             if time() > liigu_aeg:
-                liigu_aeg = time() + 0.2
+                liigu_aeg = time() + timer
+                print('k')
                 ser.write(liigu_uus)
+                print('b')
         else:
-            liigu_aeg = time() + 0.2
+            liigu_aeg = time() + timer
             liigu_kontroll = liigu_uus
+            print('k')
             ser.write(liigu_uus)
-    except:
-        liigu_aeg = time() + 0.2
+            print('b')
+    except Exception as e:
+        print("Liigu except:" + str(e))
+        liigu_aeg = time() + timer
         liigu_kontroll = liigu_uus
+        print('k')
         ser.write(liigu_uus)
+        print('b')
 
 def rotation(speed, ser):
     global liigu_kontroll
@@ -57,16 +65,23 @@ def rotation(speed, ser):
     try:
         if liigu_uus == liigu_kontroll:
             if time() > liigu_aeg:
-                liigu_aeg = time() + 0.2
+                liigu_aeg = time() + timer
+                print('k')
                 ser.write(liigu_uus)
+                print('b')
         else:
-            liigu_aeg = time() + 0.2
+            liigu_aeg = time() + timer
             liigu_kontroll = liigu_uus
+            print('k')
             ser.write(liigu_uus)
-    except:
-        liigu_aeg = time() + 0.2
+            print('b')
+    except Exception as e:
+        print("rotation except:" + str(e))
+        liigu_aeg = time() + timer
         liigu_kontroll = liigu_uus
+        print('k')
         ser.write(liigu_uus)
+        print('b')
 
 def viska(x, ser):
     global viska_kontroll
@@ -75,13 +90,14 @@ def viska(x, ser):
     try:
         if viska_uus == viska_kontroll:
             if time() > viska_aeg:
-                viska_aeg = time() + 0.2
+                viska_aeg = time() + timer
                 ser.write(viska_uus)
         else:
-            viska_aeg = time() + 0.2
+            viska_aeg = time() + timer
             viska_kontroll = viska_uus
             ser.write(viska_uus)
-    except:
-        viska_aeg = time() + 0.2
+    except Exception as e:
+        print("viska except:" + str(e))
+        viska_aeg = time() + timer
         viska_kontroll = viska_uus
         ser.write(viska_uus)

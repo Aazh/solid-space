@@ -25,7 +25,7 @@ camera = cv2.VideoCapture(0)
 # Show image and close when esc is pressed
 while True:
     i = 0
-    while i != 10:
+    while i != 30:
         temp = get_image()
         i = i + 1
 
