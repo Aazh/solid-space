@@ -14,6 +14,7 @@ def settarget(int):
     global target
     target = int
 
+
 def draw_circle(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONDBLCLK:
         cv2.circle(mask, (x, y), radius, (255, 255, 255), -1)
@@ -27,6 +28,7 @@ while True:
     i = 0
     while i != 30:
         temp = get_image()
+
         i = i + 1
 
     picture = get_image()

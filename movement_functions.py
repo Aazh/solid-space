@@ -18,7 +18,7 @@ gearboxReductionRatio = 18.75
 encoderEdgesPerMotorRevolution = 64
 wheelRadius = 0.035
 pidControlFrequency = 60
-timer = 0.5
+timer = 0.7
 
 def mainboardSpeedCalc(wheelLinearVelocity):
     wheelAngularVelocity = wheelLinearVelocity / wheelRadius
@@ -38,22 +38,26 @@ def liigu(speed, angle, angularVelocity, ser):
         if liigu_uus == liigu_kontroll:
             if time() > liigu_aeg:
                 liigu_aeg = time() + timer
-                print('k')
+                print('a')
                 ser.write(liigu_uus)
+                ser.reset_input_buffer()
+                ser.reset_output_buffer()
                 print('b')
         else:
             liigu_aeg = time() + timer
             liigu_kontroll = liigu_uus
-            print('k')
+            print('c')
             ser.write(liigu_uus)
-            print('b')
+            ser.reset_input_buffer()
+            ser.reset_output_buffer()
+            print('d')
     except Exception as e:
         print("Liigu except:" + str(e))
         liigu_aeg = time() + timer
         liigu_kontroll = liigu_uus
-        print('k')
-        ser.write(liigu_uus)
-        print('b')
+        print('e')
+        #ser.write(liigu_uus)
+        print('f')
 
 def rotation(speed, ser):
     global liigu_kontroll
@@ -66,22 +70,26 @@ def rotation(speed, ser):
         if liigu_uus == liigu_kontroll:
             if time() > liigu_aeg:
                 liigu_aeg = time() + timer
-                print('k')
+                print('g')
                 ser.write(liigu_uus)
-                print('b')
+                ser.reset_input_buffer()
+                ser.reset_output_buffer()
+                print('h')
         else:
             liigu_aeg = time() + timer
             liigu_kontroll = liigu_uus
-            print('k')
+            print('i')
             ser.write(liigu_uus)
-            print('b')
+            ser.reset_input_buffer()
+            ser.reset_output_buffer()
+            print('j')
     except Exception as e:
         print("rotation except:" + str(e))
         liigu_aeg = time() + timer
         liigu_kontroll = liigu_uus
         print('k')
-        ser.write(liigu_uus)
-        print('b')
+        #ser.write(liigu_uus)
+        print('l')
 
 def viska(x, ser):
     global viska_kontroll
@@ -91,13 +99,18 @@ def viska(x, ser):
         if viska_uus == viska_kontroll:
             if time() > viska_aeg:
                 viska_aeg = time() + timer
+                print("Viska")
                 ser.write(viska_uus)
+                ser.reset_input_buffer()
+                ser.reset_output_buffer()
         else:
             viska_aeg = time() + timer
             viska_kontroll = viska_uus
             ser.write(viska_uus)
+            ser.reset_input_buffer()
+            ser.reset_output_buffer()
     except Exception as e:
         print("viska except:" + str(e))
         viska_aeg = time() + timer
         viska_kontroll = viska_uus
-        ser.write(viska_uus)
+        #ser.write(viska_uus)
