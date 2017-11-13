@@ -22,6 +22,7 @@ def main():
         parity=serial.PARITY_NONE,
         stopbits=serial.STOPBITS_TWO,
         bytesize=serial.EIGHTBITS,
+        dsrdtr=True,
         timeout=0
     )
     print('+')
