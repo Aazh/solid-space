@@ -106,6 +106,7 @@ def main():
         # Detect objects and their positions
         res1, mask1, cx1, cy1 = detect(0, hsv)
         res2, mask2, cx2, cy2 = detect(1, hsv)
+        print(cy2)
         res3, mask3, cx3, cy3 = detect(2, hsv)
         # Make a bunch of windows
         cv2.imshow('frame',frame)
