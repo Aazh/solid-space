@@ -10,9 +10,9 @@ import serial
 def viskeTugevus(distance):
     offset = -100
     power = int(1263 + 3.51 * distance - math.pow(0.00481, math.pow(distance, 2)) + offset)
-    if (distance > 250):
-        print("power", 2200)
-        return 2200
+    if (distance > 200):
+        print("power", 2100)
+        return 2100
     # if(distance > )
     if (power > 1400):
         print("power", power)
@@ -56,7 +56,7 @@ def check_input(ser, RobotID, FieldID):
     if input == 'a{0}XSTOP-----\n'.format(FieldID):
         state = 'stop'
 
-def search_and_destroy(ser, detectors, cap, basket, forwards_speed, rotate_speed ,r_d):
+def search_and_destroy(ser, detectors, cap, basket, forwards_speed, rotate_speed, rotate_speed_search, r_d):
     global rotate_delay
     global liigu_kontroll
     global liigu_aeg
@@ -97,27 +97,27 @@ def search_and_destroy(ser, detectors, cap, basket, forwards_speed, rotate_speed
         print('else2')
         if x < 300 and x != -1:
             print('siin')
-            liigu(rotate_speed, 0, -1, ser)
+            liigu(0, 0, -rotate_speed, ser)
             rotate_delay = time() + 4
 
         elif x > 360 and x != -1:
             print('seal')
-            liigu(rotate_speed, 0, 1, ser)
+            liigu(0, 0, rotate_speed, ser)
             rotate_delay = time() + 4
 
         # otsib palli
         elif time() > rotate_delay:
             print('mujal')
-            liigu(rotate_speed, 0, 1, ser)
+            liigu(0, 0, rotate_speed_search, ser)
 
 
         else:
             print('see')
             liigu(0, 0, 0, ser)
     try:
-        return state
+        return state, rotate_delay
     except:
-        return 'search and destroy'
+        return 'search and destroy', rotate_delay
 
 def kill_ball(ser, detectors, cap, basket, attack_speed):
     global viska_kontroll

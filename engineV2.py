@@ -11,18 +11,19 @@ korv = 1 #1 lilla, 2 sinine
 timer = 0
 kiirusPoora = 0.1
 kiirusOtse = 0.3
-kiirusKeera = 0.1
+kiirusKeera = 0.6
 kiirusRunda = 0.2
 kiirusKordaja = 2
 #kiirusPoora, kiirusOtse, kiirusKeera, kiirusRunda = kiirusPoora * kiirusKordaja, kiirusOtse * kiirusKordaja, kiirusKeera * kiirusKordaja, kiirusRunda * kiirusKordaja
 radius = 0.3
+rotate_speed_search = 2
 
 def viskeTugevus(distance):
     offset = -100
     power = int(1263+3.51*distance - math.pow(0.00481, math.pow(distance, 2)) + offset)
-    if(distance > 250):
-        print("power", 2200)
-        return 2200
+    if(distance > 200):
+        print("power", 2100)
+        return 2100
     #if(distance > )
     if(power > 1400):
         print("power", power)
@@ -98,7 +99,7 @@ def main():
             k = cv2.waitKey(5) & 0xFF
 
             if state == 'search and destroy':
-                state = search_and_destroy(ser, detectors, cap, korv, kiirusOtse, kiirusKeera, rotate_delay)
+                state, rotate_delay = search_and_destroy(ser, detectors, cap, korv, kiirusOtse, kiirusKeera, rotate_speed_search, rotate_delay)
 
             elif state == 'kill ball':
                 state = kill_ball(ser, detectors, cap, korv, kiirusRunda)

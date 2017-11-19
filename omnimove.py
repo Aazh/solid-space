@@ -72,7 +72,7 @@ while True:
             liigu(speed, phi+1/2*pi, -1, ser)
 
         else:
-            liigu(1/4, -1/2* pi, 1/4, ser)
+            liigu(0, 0, 0, ser)
         print('speed: {0}, phi{1}'.format(speed, phi))
 
 
