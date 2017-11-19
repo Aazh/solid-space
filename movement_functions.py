@@ -2,15 +2,16 @@ from math import pi, cos
 from time import time
 import serial
 
-wheelConfig0 = [11/6*pi , 0.135]
-wheelConfig1 = [1/6*pi , 0.135]
-wheelConfig2 = [6/6*pi , 0.135]
+wheelConfig0 = [1/6*pi , 0.135]
+wheelConfig1 = [5/6*pi , 0.135]
+wheelConfig2 = [-3/6*pi , 0.135]
 
 def wheelCalc(wheel, robotSpeed, robotDirectionAngle, robotAngularVelocity):
     wheelConfig = [wheelConfig0, wheelConfig1, wheelConfig2]
     wheelAngle = wheelConfig[wheel][0]
     wheelDistanceFromCenter = wheelConfig[wheel][1]
     wheelLinearVelocity = robotSpeed * cos(robotDirectionAngle - wheelAngle) + wheelDistanceFromCenter * robotAngularVelocity
+    print(wheel, wheelLinearVelocity)
     return wheelLinearVelocity
 
 
@@ -56,6 +57,14 @@ def liigu(speed, angle, angularVelocity, ser):
         print('e')
         #ser.write(liigu_uus)
         print('f')
+
+def orbit(radius, speed, ser):
+
+    velocity = 1
+    angularVelocity = 1 / radius
+    velocity, angularVelocity = velocity * speed, angularVelocity * speed
+
+    liigu(velocity, -1 / 2 * pi, angularVelocity, ser)
 
 def rotation(speed, ser):
     global liigu_kontroll

@@ -6,7 +6,7 @@ import math
 from time import *
 import cv2
 import serial
-korv = 2 #1 lilla, 2 sinine
+korv = 1 #1 lilla, 2 sinine
 timer = 0
 kiirusPoora = 0.1
 kiirusOtse = 0.4

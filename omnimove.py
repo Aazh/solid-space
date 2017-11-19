@@ -2,6 +2,7 @@ import cv2
 from movement_functions import liigu
 import numpy as np
 import serial
+from math import pi
 
 def cart2pol(x, y):
     rho = np.sqrt(x**2 + y**2)
@@ -56,21 +57,23 @@ while True:
         rho = 0
     #print(x, y, rho, phi)
 
+
     speed = (cv2.getTrackbarPos('speed', 'kontroll'))/100
 
     i += 1
     if i % 10 == 0:
         if rho != 0 and k != ord("q") and k != ord("e"):
-            liigu(speed, phi, 0, ser)
+            liigu(speed, phi+1/2*pi, 0, ser)
 
         elif k == ord("q"):
-            liigu(speed, phi, 0.5, ser)
+            liigu(speed, phi+1/2*pi, 1, ser)
 
         elif k == ord("e"):
-            liigu(speed, phi, -0.5, ser)
+            liigu(speed, phi+1/2*pi, -1, ser)
 
         else:
-            liigu(0, 0, 0, ser)
+            liigu(1/4, -1/2* pi, 1/4, ser)
+        print('speed: {0}, phi{1}'.format(speed, phi))
 
 
 
@@ -79,6 +82,7 @@ while True:
     cv2.imshow('kontroll', image)
 
     if k == 27:
+        liigu(0, 0, 0, ser)
         break
 ser.close()
 cv2.destroyAllWindows()
