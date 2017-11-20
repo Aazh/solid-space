@@ -9,14 +9,19 @@ import serial
 
 def viskeTugevus(distance):
     offset = -100
+    power2 = int(1577 - 1.72 * distance + 0.013 * math.pow(distance, 2))
     power = int(1263 + 3.51 * distance - math.pow(0.00481, math.pow(distance, 2)) + offset)
+    print("viske kaugus", distance)
     if (distance > 200):
         print("power", 2100)
         return 2100
     # if(distance > )
+    if (power > 2100):
+        print("power", power2, 2100)
+        return 2100
     if (power > 1400):
-        print("power", power)
-        return power
+        print("power", power2)
+        return power2
     else:
         print("power", 1400)
         return 1400
@@ -73,17 +78,17 @@ def search_and_destroy(ser, detectors, cap, basket, forwards_speed, rotate_speed
     cv2.imshow('korv', ret_k)
     print("pall", x, y)
     if y > 380 and 295 < x < 345:
-        print('2')
+        print('hakkab poorama')
         liigu(0, 0, 0, ser)
         state = 'rotate'
         # cannontime = time()+5
 
         # liigu(0, 0, 0, ser)
     elif 295 < x < 345:
-        print('eh')
+        print('pall on keskel')
         liigu(0, 0, 0, ser)
         if y != -1:
-            print('if')
+            print('liigub edasi')
             liigu(-forwards_speed, 0 * math.pi, 0, ser)
             # q = time() + 0.15
             rotate_delay = time() + 2
@@ -96,12 +101,12 @@ def search_and_destroy(ser, detectors, cap, basket, forwards_speed, rotate_speed
     else:
         print('else2')
         if x < 300 and x != -1:
-            print('siin')
+            print('pall on vasakul')
             liigu(0, 0, -rotate_speed, ser)
             rotate_delay = time() + 4
 
         elif x > 360 and x != -1:
-            print('seal')
+            print('pall on paremal')
             liigu(0, 0, rotate_speed, ser)
             rotate_delay = time() + 4
 
@@ -124,11 +129,13 @@ def kill_ball(ser, detectors, cap, basket, attack_speed):
     global viska_aeg
     global liigu_kontroll
     global liigu_aeg
+    print("kill ball")
     ret, mask, x, y, area, xx = detectors[0].detect(cap)
     ret_k, mask_k, x_k, y_k, area_k, w = detectors[basket].detect(cap)
     cv2.imshow('pall', ret)
     cv2.imshow('korv', ret_k)
     power = viskeTugevus(basket_dist(w))
+    print("power ", power)
     print("kill ball")
     a = time() + 3
     viska(power, ser)
@@ -152,6 +159,7 @@ def rotate(ser ,detectors, cap, basket, rotate_speed, radius):
         # rotation(-0.4, ser)
         print("korv ", x_k, y_k, area_k)
         if 310 < x_k < 330 and area_k > 100 and y > 360 and area > 10:
+            print("kill ball0")
             state = 'kill ball'
         if x_k < 310 and area_k > 10:
             orbit(radius, -rotate_speed, ser)

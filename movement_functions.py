@@ -11,7 +11,7 @@ def wheelCalc(wheel, robotSpeed, robotDirectionAngle, robotAngularVelocity):
     wheelAngle = wheelConfig[wheel][0]
     wheelDistanceFromCenter = wheelConfig[wheel][1]
     wheelLinearVelocity = robotSpeed * cos(robotDirectionAngle - wheelAngle) + wheelDistanceFromCenter * robotAngularVelocity
-    print(wheel, wheelLinearVelocity)
+    #print(wheel, wheelLinearVelocity)
     return wheelLinearVelocity
 
 
