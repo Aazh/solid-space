@@ -19,7 +19,7 @@ gearboxReductionRatio = 18.75
 encoderEdgesPerMotorRevolution = 64
 wheelRadius = 0.035
 pidControlFrequency = 60
-timer = 0
+timer = 0.01
 
 def mainboardSpeedCalc(wheelLinearVelocity):
     wheelAngularVelocity = wheelLinearVelocity / wheelRadius

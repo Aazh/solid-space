@@ -1,15 +1,32 @@
 from detection_functions import detector
 from movement_functions import liigu, viska, orbit
-
+import time
 import math
 from time import *
 import cv2
 import serial
 
+#TODO m''ra tingimus, millega hakkab seda kasutama
+def findBall(ser, detectors, cap, korv, kiirusOtse, kiirusPoora, state):
+    ret, mask, x, y, area, xx = detectors[0].detect(cap)
+    ret_k, mask_k, x_k, y_k, area_k, w = detectors[korv].detect(cap)
+    if 310 < x_k < 330 and area_k > 100 and y > 360 and area > 10:
+        liigu(-kiirusOtse, 0 * math.pi, 0, ser)
+    if x_k < 310 and area_k > 10:
+        liigu(0, 0, -kiirusPoora, ser)
+    if x_k > 330 and area_k > 10:
+        liigu(0, 0, -kiirusPoora, ser)
+    if x_k < 0 or area_k < 100:
+        liigu(0, 0, -kiirusPoora, ser)
+    if basket_dist(w) < 50 or area > 10:
+        state = 'search and destroy'
+    return state
+
+
 
 def viskeTugevus(distance):
-    offset = -100
-    power2 = int(1577 - 1.72 * distance + 0.013 * math.pow(distance, 2))
+    offset = 30
+    power2 = int(1577 - 1.72 * distance + 0.013 * math.pow(distance, 2) + offset)
     power = int(1263 + 3.51 * distance - math.pow(0.00481, math.pow(distance, 2)) + offset)
     print("viske kaugus", distance)
     if (distance > 200):
@@ -41,27 +58,40 @@ def focalLenght(widthP):
     return ((widthP * distance) / width)
     # 525
 
-def check_input(ser, RobotID, FieldID):
-    global state
+def check_input(ser, RobotID, FieldID, state):
+    #print(ser.readline().decode())
     input = str(ser.readline()).split(':')[-1]
-    print("input: ", input)
+    #print("input: ", input)
     if input != "b''":
         input = input[:-4]
         # print(input)
+    print("input: ", input)
+    #sleep(1)
     if input == 'a{0}PING-----'.format(RobotID):
-        ser.write("rf:a{0}ACK------\n".format(RobotID).encode())
+        ser.write(("rf:a" + RobotID + "ACK-----\n").encode())
     if input == 'a{0}START----'.format(RobotID):
-        ser.write("rf:a{0}ACK------\n".format(RobotID).encode())
-        state = 'search and destroy'
+        print("START~~")
+        ser.write(("rf:a" + RobotID + "ACK-----\n").encode())
+        delay = time() + 1
+        while time() < delay:
+            # time()
+            liigu(-0.3, 0 * math.pi, 0, ser)
+            sleep(0.01)
+            # print(delay)
+        liigu(0, 0, 0, ser)
+        return 'search and destroy'
     if input == 'a{0}STOP-----'.format(RobotID):
-        ser.write("rf:a{0}ACK------\n".format(RobotID).encode())
-        state = 'stop'
+        ser.write(("rf:a" + RobotID + "ACK-----\n").encode())
+        return 'stop'
     if input == 'a{0}XSTART----\n'.format(FieldID):
-        state = 'search and destroy'
+        return 'search and destroy'
     if input == 'a{0}XSTOP-----\n'.format(FieldID):
-        state = 'stop'
+        return 'stop'
 
-def search_and_destroy(ser, detectors, cap, basket, forwards_speed, rotate_speed, rotate_speed_search, r_d):
+    return state
+
+
+def search_and_destroy(ser, detectors, cap, korv, forwards_speed, rotate_speed, rotate_speed_search, r_d):
     global rotate_delay
     global liigu_kontroll
     global liigu_aeg
@@ -69,7 +99,7 @@ def search_and_destroy(ser, detectors, cap, basket, forwards_speed, rotate_speed
     viska(1000, ser)
     # ser.write('fs:0\n'.encode())
     ret, mask, x, y, area, xx = detectors[0].detect(cap)
-    ret_k, mask_k, x_k, y_k, area_k, w = detectors[basket].detect(cap)
+    ret_k, mask_k, x_k, y_k, area_k, w = detectors[korv].detect(cap)
     # print("korvi kaugus", korviKaugus(y_k))
     # print("wp: ", w)
     # i = focalLenght(w)

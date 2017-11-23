@@ -7,7 +7,7 @@ from time import *
 import cv2
 import serial
 
-korv = 1 #1 lilla, 2 sinine
+korv = 2 #1 lilla, 2 sinine
 timer = 0
 kiirusPoora = 0.1
 kiirusOtse = 0.3
@@ -55,23 +55,19 @@ def main():
     ser = serial.Serial(
         port=port,
         baudrate=9600,
-        parity=serial.PARITY_NONE,
-        stopbits=serial.STOPBITS_ONE,
-        bytesize=serial.EIGHTBITS,
-        dsrdtr=True,
-        timeout=0,
-        #write_timeout=1
+        timeout=0.000001,
+        write_timeout=0.000001
     )
 
     print('+++++++++++++++++++++')
     #ser.write("fs:0\n".encode())
-    ser.write('d:1200\n'.encode())
+    #ser.write('d:1200\n'.encode())
     #sleep(5)
     #ser.write("fs:1\n".encode())
     print('OK')
     t = time() + 2
-    #state = 'stop'
-    state = 'search and destroy'
+    state = 'stop'
+    #state = 'search and destroy'
     q = 0
     #palli otsimise delay
     rotate_delay = time() + 1
@@ -85,16 +81,13 @@ def main():
         cv2.namedWindow("pall")
         cv2.namedWindow("korv")
 
-        delay = time() + 1
-        while time() < delay:
-            liigu(-kiirusOtse, 0 * math.pi, 0, ser)
-            #print(delay)
-        liigu(0, 0, 0, ser)
+
 
 
 
         while True:
-            check_input(ser, RobotID, FieldID)
+            #print(ser.readline().decode())
+            state = check_input(ser, RobotID, FieldID, state)
             print("check input")
             k = cv2.waitKey(5) & 0xFF
             print("State?")
@@ -109,7 +102,11 @@ def main():
             elif state == 'rotate':
                 print("State: ", state)
                 state = rotate(ser, detectors, cap, korv, kiirusPoora, radius)
-
+            elif state == 'find ball':
+                print("State: ", state)
+                state = findBall(ser, detectors, cap, korv, kiirusOtse, kiirusPoora, state)
+            else:
+                print("STOP!!")
 
 
             if k == 27:
