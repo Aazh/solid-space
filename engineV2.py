@@ -10,7 +10,7 @@ import serial
 korv = 2 #1 lilla, 2 sinine
 timer = 0
 kiirusPoora = 0.1
-kiirusOtse = 0.3
+kiirusOtse = 0.35
 kiirusKeera = 0.6
 kiirusRunda = 0.2
 kiirusKordaja = 2
@@ -53,8 +53,8 @@ def main():
     cap = cv2.VideoCapture(0)
     port = 'COM3'
 
-    kaugusVasak = 305
-    kaugusParem = 335
+    kaugusVasak = 313
+    kaugusParem = 330
     kaugusVasakSuurem = 295
     kaugusParemSuurem = 345
 
@@ -66,15 +66,16 @@ def main():
     )
 
     print('+++++++++++++++++++++')
-    ser.write("fs:0\n".encode())
-    ser.write('d:1200\n'.encode())
-    sleep(2)
-    ser.write("fs:1\n".encode())
+    ser.write(("fs:0").encode())
+    for i in range(500, 1600, 100):
+        ser.write(("d:" + str(i) + "\n").encode())
+        sleep(0.5)
     print('OK')
+    ser.write(("fs:1").encode())
     t = time() + 2
     #state = 'stop'
-    #state = 'search and destroy'
-    state = 'find ball'
+    state = 'search and destroy'
+    #state = 'find ball'
     q = 0
     #palli otsimise delay
     rotate_delay = time() + 1
@@ -94,9 +95,10 @@ def main():
 
         while True:
             #print(ser.readline().decode())
+            ser.write('d:1400\n'.encode())
             state = check_input(ser, RobotID, FieldID, state)
             print("check input")
-            viska(1200, ser)
+            #viska(1200, ser)
             k = cv2.waitKey(5) & 0xFF
             print("State?")
             if state == 'search and destroy':

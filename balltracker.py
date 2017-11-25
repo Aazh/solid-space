@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 
-
 def main():
     cap = cv2.VideoCapture(0)
     # Load HSV values
@@ -33,6 +32,7 @@ def main():
     def detect(index,hsv):
         cx = -1
         cy = -1
+        w=-1
         # Threshold the HSV image to get only necessary colors
         color = get_color(index)
         lowerColor = np.array([color.minhue, color.minsat, color.minint])
@@ -65,7 +65,7 @@ def main():
             x, y, w, h = cv2.boundingRect(c)
             # draw the book contour (in green)
             cv2.rectangle(res, (x, y), (x + w, y + h), (0, 255, 0), 2)
-        return res, mask, cx, cy
+        return res, mask, cx, cy, w
 
     def nothing(x):
         pass
@@ -104,15 +104,15 @@ def main():
         # Convert BGR to HSV
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         # Detect objects and their positions
-        res1, mask1, cx1, cy1 = detect(0, hsv)
-        res2, mask2, cx2, cy2 = detect(1, hsv)
-        print(cy2)
-        res3, mask3, cx3, cy3 = detect(2, hsv)
+        res1, mask1, cx1, cy1, w1 = detect(0, hsv)
+        res2, mask2, cx2, cy2, w2 = detect(1, hsv)
+        res3, mask3, cx3, cy3, w3 = detect(2, hsv)
         # Make a bunch of windows
         cv2.imshow('frame',frame)
         cv2.imshow('res1',res1)
         cv2.imshow('res2', res2)
         cv2.imshow('res3', res3)
+        print("kaugus", basket_dist(w3), w3)
         k = cv2.waitKey(5) & 0xFF
         if k == 27:
             break
@@ -127,6 +127,9 @@ def main():
         # Write the string to file
         f.write(txt)
         f.close()
-
+def basket_dist(widthP):
+    width = 16
+    focal = 525
+    return (width * focal) / widthP
 if __name__ == '__main__':
     main()

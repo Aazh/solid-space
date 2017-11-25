@@ -99,23 +99,8 @@ def rotation(speed, ser):
         print('l')
 
 def viska(x, ser):
-    global viska_kontroll
-    global viska_aeg
-    viska_uus = 'd:{0}\n'.format(x).encode()
     try:
-        if viska_uus == viska_kontroll:
-            if time() > viska_aeg:
-                viska_aeg = time() + timer
-                print("Viska")
-                ser.write(viska_uus)
-
-        else:
-            viska_aeg = time() + timer
-            viska_kontroll = viska_uus
-            ser.write(viska_uus)
-
+        print("Viska")
+        ser.write('d:{0}\n'.format(x).encode())
     except Exception as e:
         print("viska except:" + str(e))
-        viska_aeg = time() + timer
-        viska_kontroll = viska_uus
-        #ser.write(viska_uus)

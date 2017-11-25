@@ -38,24 +38,71 @@ def findBall(ser, detectors, cap, korv, kiirusOtse, kiirusKeera, kiirusPoora, st
 
 
 def viskeTugevus(distance):
-    offset = 50
-    power2 = int(1577 - 1.72 * distance + 0.013 * math.pow(distance, 2) + offset)
-    power = int(1263 + 3.51 * distance - math.pow(0.00481, math.pow(distance, 2)) + offset)
-    power3 = 0.0063 * math.pow(distance, 2) - 0.9 * distance + 1453 + offset
+    #offset = 35
+    power2 = int(1577 - 1.72 * distance + 0.013 * math.pow(distance, 2) )
+    power = int(1263 + 3.51 * distance - math.pow(0.00481, math.pow(distance, 2)))
+    power3 = 0.0063 * math.pow(distance, 2) - 0.9 * distance + 1453
+    power4 = int(1.3617 * distance + 1331.6)
     print("viske kaugus", distance)
-    if(distance < 80):
-        print("power", 1580)
-        return 1580
-    # if(distance > )
-    if (power3 > 2100):
+    if (distance <= 50):
         print("power", 2100)
         return 2100
+    if(distance <= 60):
+        print("power", 1450 - 10)
+        return 1450 - 10
+    if (distance <= 70):
+        print("power", 1410 - 10)
+        return 1410 - 10
+    if (distance <= 80):
+        print("power", 1415 - 10)
+        return 1415 - 10
+    if (distance <= 90):
+        print("power", 1430 - 10)
+        return 1430
+    # if(distance > )
+    if (power3 > 2100):
+        print("power", 2100, power4)
+        return 2100
     if (power3 <= 1200):
-        print("power", 1400)
+        print("power", 1400, power4)
         return 1400
     else:
-        print("power", power3)
-        return power3
+        if distance <= 140:
+            offset2 = -30
+            print("power", power4)
+            return power4 + offset2
+        elif distance <= 160:
+            offset2 = -30
+            print("power", power4)
+            return power4 + offset2
+        elif distance <= 180:
+            offset2 = - 30
+            print("power", power4)
+            return power4 + offset2
+        elif distance <= 200:
+            offset2 = -30
+            print("power", power4)
+            return power4 + offset2
+        elif distance <= 230:
+            offset2 = -30
+            print("power", power4)
+            return power4 + offset2
+        elif distance <= 250:
+            offset2 = -30
+            print("power", power4)
+            return power4 + offset2
+        elif distance <= 300:
+            offset2 = -30
+            print("power", power4)
+            return power4 + offset2
+        elif distance <= 350:
+            offset2 = -25
+            print("power", power4)
+            return power4 + offset2
+        else:
+            offset = -10
+            print("power", power4)
+            return power4 + offset
 
 
 def basket_dist(widthP):
@@ -104,6 +151,25 @@ def check_input(ser, RobotID, FieldID, state):
 
     return state
 
+"""
+    elif y > 380 and area >= minArea and x < kaugusVasak:
+        liigu(-shift_speed, math.pi / 2, 0, ser)"""
+
+"""
+    elif y > 380 and area >= minArea and x > kaugusParem:
+        liigu(-shift_speed, -math.pi / 2, 0, ser)"""
+
+'''elif 0 <= x <= kaugusVasak - 10 and area >= minArea:
+    kontroll = 0
+    print('pall on vasakul')
+    liigu(0, 0, -rotate_speed, ser)
+    rotate_delay = time() + 4'''
+
+'''elif x >= kaugusParem - 10and area >= minArea:
+    kontroll = 0
+    print('pall on paremal')
+    liigu(0, 0, rotate_speed, ser)
+    rotate_delay = time() + 4'''
 
 def search_and_destroy(ser, detectors, cap, korv, forwards_speed, rotate_speed, rotate_speed_search, r_d, kontroll, kaugusVasak, kaugusParem, kaugusVasakSuurem, kaugusParemSuurem, shift_speed):
     global rotate_delay
@@ -112,7 +178,7 @@ def search_and_destroy(ser, detectors, cap, korv, forwards_speed, rotate_speed, 
 
     minArea = 10
     rotate_delay = r_d
-    viska(1200, ser)
+    #viska(1200, ser)
     # ser.write('fs:0\n'.encode())
     ret, mask, x, y, area, xx = detectors[0].detect(cap)
     ret_k, mask_k, x_k, y_k, area_k, w = detectors[korv].detect(cap)
@@ -127,10 +193,10 @@ def search_and_destroy(ser, detectors, cap, korv, forwards_speed, rotate_speed, 
         y = -1
         x = -1
         area = -1
-    if y > 430 and area >= minArea:
+    if y > 420 and area >= minArea:
         kontroll = 0
         print("Tagasi")
-        liigu(forwards_speed, 0 * math.pi, 0, ser)
+        liigu(forwards_speed / 2, 0 * math.pi, 0, ser)
     elif y > 380 and kaugusVasak < x < kaugusParem and area >= minArea:
         kontroll = 0
         print('hakkab poorama')
@@ -139,21 +205,31 @@ def search_and_destroy(ser, detectors, cap, korv, forwards_speed, rotate_speed, 
         # cannontime = time()+5
 
         # liigu(0, 0, 0, ser)
+
     elif y > 380 and area >= minArea and x < kaugusVasak:
         liigu(-shift_speed, math.pi / 2, 0, ser)
+        rotate_delay = time() + 4
+
+
 
     elif y > 380 and area >= minArea and x > kaugusParem:
         liigu(-shift_speed, -math.pi / 2, 0, ser)
+        rotate_delay = time() + 4
 
-    elif area >= minArea:
+
+
+
+
+    elif area >= minArea and y < 380:
         kontroll = 0
         print('pall on keskel')
         if y != -1:
             print('liigub edasi')
             nurk = leia_nurk(x)
-            liigu(-forwards_speed, nurk, 0, ser)
+            liigu(-forwards_speed, nurk, nurk/5, ser)
             # q = time() + 0.15
             rotate_delay = time() + 2
+
     elif False:
         if kaugusVasakSuurem < x < kaugusParemSuurem  and area >= minArea:
             kontroll = 0
@@ -169,6 +245,15 @@ def search_and_destroy(ser, detectors, cap, korv, forwards_speed, rotate_speed, 
                 print('else')
                 # liigu(0, 0, 0, ser)
                 # liigu(-0.4, 9 / 6 * pi, 0, ser)
+                # otsib palli
+    elif time() > rotate_delay:
+        print('mujal', kontroll)
+        kontroll += 1
+        if kontroll > 60:
+            state = "find ball"
+            kontroll = 0
+            return state, rotate_delay, kontroll
+        liigu(0, 0, rotate_speed_search, ser)
 
     else:
         print('else2')
@@ -186,13 +271,13 @@ def search_and_destroy(ser, detectors, cap, korv, forwards_speed, rotate_speed, 
                 rotate_delay = time() + 4
 
         # otsib palli
-        elif time() > rotate_delay:
-            print('mujal', kontroll)
-            kontroll += 1
-            if kontroll > 60:
-                state = "find ball"
-                kontroll = 0
-            liigu(0, 0, rotate_speed_search, ser)
+            elif time() > rotate_delay:
+                print('mujal', kontroll)
+                kontroll += 1
+                if kontroll > 60:
+                    state = "find ball"
+                    kontroll = 0
+                liigu(0, 0, rotate_speed_search, ser)
 
 
         else:
@@ -209,6 +294,7 @@ def kill_ball(ser, detectors, cap, basket, attack_speed):
     global viska_aeg
     global liigu_kontroll
     global liigu_aeg
+
     print("kill ball")
     ret, mask, x, y, area, xx = detectors[0].detect(cap)
     ret_k, mask_k, x_k, y_k, area_k, w = detectors[basket].detect(cap)
@@ -217,11 +303,14 @@ def kill_ball(ser, detectors, cap, basket, attack_speed):
     power = viskeTugevus(basket_dist(w))
     print("power ", power)
     print("kill ball")
-    a = time() + 3
-    viska(power, ser)
+    a = time() + 2
+    viska(int(power), ser)
 
     while time() < a:
-        viska(power, ser)
+        ret, mask, x, y, area, xx = detectors[0].detect(cap)
+        ret_k, mask_k, x_k, y_k, area_k, w = detectors[basket].detect(cap)
+        power = viskeTugevus(basket_dist(w))
+        viska(int(power), ser)
         liigu(-attack_speed, 0 * math.pi, 0, ser)
 
     state = 'search and destroy'
@@ -238,22 +327,31 @@ def rotate(ser ,detectors, cap, basket, rotate_speed, radius, kaugusVasak, kaugu
         cv2.imshow('korv', ret_k)
         # rotation(-0.4, ser)
         print("korv ", x_k, y_k, area_k)
-        if 310 < x_k < 330 and area_k > 100 and y > 360 and area > 10:
+        if 310 < x_k < 330 and area_k > 100 and y > 360 and area > 10 and kaugusVasak <= x < kaugusParem:
             print("kill ball0")
-            state = 'kill ball'
-        if x_k < 310 and area_k > 10:
-            orbit(radius, -rotate_speed, ser)
-            if not (y > 380 and kaugusVasak < x < kaugusParem and area > 80):
-                return 'search and destroy'
-        if x_k > 330 and area_k > 10:
-            orbit(radius, rotate_speed, ser)
-            if not (y > 380 and kaugusVasak < x < kaugusParem and area > 80):
-                return 'search and destroy'
-        # kui ei n'e korvi
-        if x_k < 0 or area_k < 100:
+            liigu(0, 0, 0, ser)
+            return 'kill ball'
+
+
+        elif x_k < 0 or area_k < 10:
             orbit(radius, rotate_speed * 2, ser)
-            if not (y > 380 and kaugusVasakSuurem < x < kaugusParemSuurem and area > 80):
-                return 'search and destroy'
+        elif x_k < 310 and area_k > 10:
+            orbit(radius, -rotate_speed, ser)
+            """if not (y > 380 and kaugusVasak < x < kaugusParem and area > 80):
+                return 'search and destroy'"""
+        elif x_k > 330 and area_k > 10:
+            orbit(radius, rotate_speed, ser)
+            """if not (y > 380 and kaugusVasak < x < kaugusParem and area > 80):
+                return 'search and destroy'"""
+
+                    # kui ei n'e korvi
+        if not (y > 380 and kaugusVasak <= x < kaugusParem and area > 80):
+            liigu(0, 0, 0, ser)
+            return 'search and destroy'
+        #if not (y > 380 and kaugusVasakSuurem < x < kaugusParemSuurem and area > 80):
+        '''else:
+            liigu(0, 0, 0, ser)
+            return 'search and destroy'''''
     except:
         state = 'search and destroy'
         # pass
