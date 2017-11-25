@@ -7,7 +7,7 @@ from time import *
 import cv2
 import serial
 
-korv = 2 #1 lilla, 2 sinine
+korv = 1 #1 lilla, 2 sinine
 timer = 0
 kiirusPoora = 0.1
 kiirusOtse = 0.3
@@ -48,7 +48,7 @@ def focalLenght(widthP):
 def main():
     FieldID = 'A'
     RobotID = FieldID + 'D'
-
+    kontroll = time()
     cap = cv2.VideoCapture(0)
     port = 'COM3'
 
@@ -66,8 +66,8 @@ def main():
     #ser.write("fs:1\n".encode())
     print('OK')
     t = time() + 2
-    state = 'stop'
-    #state = 'search and destroy'
+    #state = 'stop'
+    state = 'search and destroy'
     q = 0
     #palli otsimise delay
     rotate_delay = time() + 1
@@ -93,7 +93,7 @@ def main():
             print("State?")
             if state == 'search and destroy':
                 print("State: ", state)
-                state, rotate_delay = search_and_destroy(ser, detectors, cap, korv, kiirusOtse, kiirusKeera, rotate_speed_search, rotate_delay)
+                state, rotate_delay = search_and_destroy(ser, detectors, cap, korv, kiirusOtse, kiirusKeera, rotate_speed_search, rotate_delay, 0)
 
             elif state == 'kill ball':
                 print("State: ", state)

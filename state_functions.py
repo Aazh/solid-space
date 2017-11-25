@@ -25,20 +25,21 @@ def findBall(ser, detectors, cap, korv, kiirusOtse, kiirusPoora, state):
 
 
 def viskeTugevus(distance):
-    offset = 30
+    offset = 50
     power2 = int(1577 - 1.72 * distance + 0.013 * math.pow(distance, 2) + offset)
     power = int(1263 + 3.51 * distance - math.pow(0.00481, math.pow(distance, 2)) + offset)
+    power3 = 0.0063 * math.pow(distance, 2) - 0.9 * distance + 1453 - offset
     print("viske kaugus", distance)
-    if (distance > 200):
-        print("power", 2100)
-        return 2100
+    if(distance < 80):
+        print("power", 1400)
+        return 1560
     # if(distance > )
-    if (power > 2100):
-        print("power", power2, 2100)
+    if (power3 > 2100):
+        print("power", power3, 2100)
         return 2100
-    if (power > 1400):
-        print("power", power2)
-        return power2
+    if (power3 > 1400):
+        print("power", power3)
+        return power3
     else:
         print("power", 1400)
         return 1400
@@ -91,7 +92,7 @@ def check_input(ser, RobotID, FieldID, state):
     return state
 
 
-def search_and_destroy(ser, detectors, cap, korv, forwards_speed, rotate_speed, rotate_speed_search, r_d):
+def search_and_destroy(ser, detectors, cap, korv, forwards_speed, rotate_speed, rotate_speed_search, r_d, kontroll):
     global rotate_delay
     global liigu_kontroll
     global liigu_aeg
@@ -143,6 +144,11 @@ def search_and_destroy(ser, detectors, cap, korv, forwards_speed, rotate_speed, 
         # otsib palli
         elif time() > rotate_delay:
             print('mujal')
+            if kontroll + 4 < time():
+                time()
+                #state = "find ball"
+            kontroll = time()
+            liigu(-forwards_speed, 0 * math.pi, 0, ser)
             liigu(0, 0, rotate_speed_search, ser)
 
 
@@ -197,7 +203,7 @@ def rotate(ser ,detectors, cap, basket, rotate_speed, radius):
             orbit(radius, rotate_speed, ser)
         # kui ei n'e korvi
         if x_k < 0 or area_k < 100:
-            orbit(radius, -rotate_speed, ser)
+            orbit(radius, rotate_speed, ser)
         if not (y > 380 and 280 < x < 360 and area > 80):
             state = 'search and destroy'
     except:
